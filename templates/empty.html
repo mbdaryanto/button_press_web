@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}Empty Page{% endblock %}
+
+{% block content %}
+  <script>
+    function fetchUser() {
+      console.log('calling fetch API...');
+      fetch("{% url 'fetch_user' %}", {
+        credentials: 'include',
+      }).then(
+        response => response.json()
+      ).then(data => console.log(data));
+    }
+  </script>
+  <button onclick="fetchUser()">fetchUser</button>
+{% endblock %}
