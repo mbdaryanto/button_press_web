@@ -2,14 +2,14 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpRequest
 
 
-def home(request):
+def home(request: HttpRequest):
     return render(request, 'empty.html')
 
 
-def login_user(request):
+def login_user(request: HttpRequest):
     if request.method == "POST":
         username = request.POST['username']
         password = request.POST['password']
@@ -26,14 +26,14 @@ def login_user(request):
         return render(request, 'authenticate/login.html')
 
 
-def logout_user(request):
+def logout_user(request: HttpRequest):
     logout(request)
     messages.success(request, 'User has been successfully logged out!')
 
     return redirect('home')
 
 
-def register_user(request):
+def register_user(request: HttpRequest):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
         if form.is_valid():
@@ -52,7 +52,7 @@ def register_user(request):
     })
 
 
-def fetch_user(request):
+def fetch_user(request: HttpRequest):
     if request.user.is_authenticated:
         return JsonResponse({
             'username': request.user.username,

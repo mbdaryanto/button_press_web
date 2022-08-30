@@ -3,7 +3,7 @@ import json
 from datetime import timedelta
 from pathlib import Path
 from django.shortcuts import render
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpRequest
 from django.db import transaction
 from django.db.models import F
 from django.utils import timezone
@@ -13,17 +13,17 @@ from .models import PressCounter, UserPress
 MANIFEST_JSON = Path(__file__).parent / 'static' / 'manifest.json'
 
 
-def index(request):
+def index(request: HttpRequest):
     return render(request, 'counter/home.html', {
         'lib_js': get_lib_js(),
     })
 
 
-def counter(request):
+def counter():
     return JsonResponse({ 'counter': read_press_counter() })
 
 
-def increment(request):
+def increment(request: HttpRequest):
     if request.method == 'POST':
         if not request.user.is_authenticated:
             return JsonResponse({
