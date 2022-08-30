@@ -31,33 +31,43 @@ function App({ isAuthenticated, counterUrl, incrementUrl, csrfmiddlewaretoken }:
   }, [counterUrl])
 
   async function handleIncrement() {
-    console.log('handleIncrement...')
+    // console.log('handleIncrement...')
 
     const form = new FormData()
     form.append('csrfmiddlewaretoken', csrfmiddlewaretoken)
 
-    const response = await fetch(incrementUrl, {
-      credentials: 'include',
-      body: form,
-      method: 'POST',
-    })
+    try {
+      const response = await fetch(incrementUrl, {
+        credentials: 'include',
+        body: form,
+        method: 'POST',
+      })
 
-    const data = await response.json()
+      const data = await response.json()
 
-    // if an error occured
-    if (response.status > 299) {
-      setError(data.detail)
-      return
+      // if an error occured
+      if (response.status > 299) {
+        setError(data.detail)
+        return
+      }
+      setCount((data as CounterResponse).counter)
+      setError(undefined)
+
+    } catch (error) {
+      console.error(error)
     }
 
-    setError(undefined)
-    setCount((data as CounterResponse).counter)
   }
 
-  console.log(isAuthenticated)
+  // console.log(isAuthenticated)
 
   return (
-    <div className="App">
+    <div className="App container-fluid d-flex flex-column align-items-center mt-2">
+      {error && (
+        <div className="alert alert-warning container-fluid" role="alert">
+          {error}
+        </div>
+      )}
       <h1>{count}</h1>
       {isAuthenticated && (
         <button
@@ -67,11 +77,7 @@ function App({ isAuthenticated, counterUrl, incrementUrl, csrfmiddlewaretoken }:
           Increment
         </button>
       )}
-      {error && (
-        <div className="alert alert-warning">
-          {error}
-        </div>
-      )}
+
     </div>
   )
 }
