@@ -24,6 +24,10 @@ Run the database migration
 
     python manage.py migrate
 
+generate the secret key in .env
+
+    python make_env.py
+
 and finally run the server
 
     python manage.py runserver
