@@ -1,0 +1,22 @@
+{
+  "index.html": {
+    "file": "assets/main.c435e450.js",
+    "src": "index.html",
+    "isEntry": true,
+    "imports": [
+      "src/main.tsx"
+    ]
+  },
+  "src/main.tsx": {
+    "file": "assets/lib.c10b6bff.js",
+    "src": "src/main.tsx",
+    "isEntry": true,
+    "css": [
+      "assets/main.3fce1f81.css"
+    ]
+  },
+  "src/main.css": {
+    "file": "assets/main.3fce1f81.css",
+    "src": "src/main.css"
+  }
+}

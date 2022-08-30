@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+  {% csrf_token %}
+  <script>
+    window.config = {
+      'counterUrl': "{% url 'counter' %}",
+      'incrementUrl': "{% url 'increment' %}",
+      'csrfToken': "{{ csrf_token }}",
+    }
+  </script>
+  <div id="root"></div>
+  <script type="module" src="/src/main.tsx"></script>
+{% endblock %}
