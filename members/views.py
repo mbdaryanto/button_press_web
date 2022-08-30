@@ -5,11 +5,10 @@ from django.contrib import messages
 from django.http import JsonResponse, HttpRequest
 
 
-def home(request: HttpRequest):
-    return render(request, 'empty.html')
-
-
 def login_user(request: HttpRequest):
+    """
+    login existing user
+    """
     if request.method == "POST":
         username = request.POST['username']
         password = request.POST['password']
@@ -27,6 +26,9 @@ def login_user(request: HttpRequest):
 
 
 def logout_user(request: HttpRequest):
+    """
+    logout user
+    """
     logout(request)
     messages.success(request, 'User has been successfully logged out!')
 
@@ -34,6 +36,9 @@ def logout_user(request: HttpRequest):
 
 
 def register_user(request: HttpRequest):
+    """
+    register user to database using form
+    """
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
         if form.is_valid():
@@ -53,6 +58,9 @@ def register_user(request: HttpRequest):
 
 
 def fetch_user(request: HttpRequest):
+    """
+    to fetch the user info using json
+    """
     if request.user.is_authenticated:
         return JsonResponse({
             'username': request.user.username,
