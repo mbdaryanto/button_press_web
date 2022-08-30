@@ -5,13 +5,14 @@
 {% block content %}
 <script>
   window.config = {
-    isAuthenticated: {% if user.is_authenticated %} true {% else %} false {% endif %},
+    isAuthenticated: {{user.is_authenticated | lower}},
     counterUrl: "{% url 'counter' %}",
     incrementUrl: "{% url 'increment' %}",
     csrfmiddlewaretoken: "{{ csrf_token }}",
   }
   </script>
   {% load static %}
+
   <script type="module" src="{% static lib_js %}"></script>
   <div id="root"></div>
 {% endblock %}

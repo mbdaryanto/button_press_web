@@ -16,7 +16,7 @@ make virtualenv inside the directory
 
 install all the python requirements
 
-    pip install -r requirements
+    pip install -r requirements.txt
 
 change the settings in `djsite/settings.py` if you want to store
 using another database or leave it if you want to use sqlite.

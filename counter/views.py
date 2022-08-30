@@ -37,7 +37,7 @@ def increment(request: HttpRequest):
         with transaction.atomic():
             number_of_presses = UserPress.objects.filter(at__gte=lower_range, user=user).select_for_update().count()
             if number_of_presses >= 5:
-                return JsonResponse({ 'detail': 'User cannot press the button'}, status=403)
+                return JsonResponse({ 'detail': 'You may only press the button 5 times or less within 60 seconds'}, status=403)
             user_press = UserPress(
                 user=user,
                 at=at,

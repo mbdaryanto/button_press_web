@@ -63,19 +63,24 @@ function App({ isAuthenticated, counterUrl, incrementUrl, csrfmiddlewaretoken }:
 
   return (
     <div className="App container-fluid d-flex flex-column align-items-center mt-2">
-      {error && (
-        <div className="alert alert-warning container-fluid" role="alert">
-          {error}
-        </div>
-      )}
-      <h1>{count}</h1>
+
+      <h1 className="m-5">Button Press Web</h1>
+
+      <h1 className="display-1">{count}</h1>
+
       {isAuthenticated && (
         <button
           className="btn btn-primary"
           onClick={handleIncrement}
         >
-          Increment
+          PRESS ME
         </button>
+      )}
+
+      {error && (
+        <div className="alert alert-warning container-fluid mt-2" role="alert">
+          {error}
+        </div>
       )}
 
     </div>
