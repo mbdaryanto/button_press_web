@@ -19,7 +19,7 @@ def index(request: HttpRequest):
     })
 
 
-def counter():
+def counter(request: HttpRequest):
     return JsonResponse({ 'counter': read_press_counter() })
 
 
