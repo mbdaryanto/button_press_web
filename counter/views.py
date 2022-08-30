@@ -14,16 +14,28 @@ MANIFEST_JSON = Path(__file__).parent / 'static' / 'manifest.json'
 
 
 def index(request: HttpRequest):
+    """
+    homepage where the counter shows, using React.js for the click
+    We do not want to refresh the page after clicking the button, so make sure to
+    make use of ajax.
+    """
     return render(request, 'counter/home.html', {
+        'initialCount': read_press_counter(),
         'lib_js': get_lib_js(),
     })
 
 
 def counter(request: HttpRequest):
+    """
+    to read the counter
+    """
     return JsonResponse({ 'counter': read_press_counter() })
 
 
 def increment(request: HttpRequest):
+    """
+    to increment the counter, returning json with updated counter value
+    """
     if request.method == 'POST':
         if not request.user.is_authenticated:
             return JsonResponse({
@@ -31,7 +43,7 @@ def increment(request: HttpRequest):
             }, status=403)
         user = request.user
         at = timezone.now()
-        #A user should only be allowed to press the button 5 times every 60 seconds
+        # A user should only be allowed to press the button 5 times every 60 seconds
         lower_range = at - timedelta(seconds=60)
 
         with transaction.atomic():
@@ -51,14 +63,22 @@ def increment(request: HttpRequest):
 
 
 def get_lib_js() -> str:
+    """
+    reading .js file from the manifest.json
+    """
     with MANIFEST_JSON.open('rb') as f:
         manifest = json.load(f)
         return manifest["src/main.tsx"]["file"]
 
 
 def read_press_counter() -> int:
+    """
+    read the press counter from the db
+    """
     records_count = PressCounter.objects.count()
+
     if records_count == 0:
+        # if no records found return 0
         return 0
     else:
         press_counters: List[PressCounter] = PressCounter.objects.order_by('id')[:1]
@@ -68,6 +88,9 @@ def read_press_counter() -> int:
 
 
 def increment_press_counter() -> int:
+    """
+    increment the counter and return the updated counter value
+    """
     records_count = PressCounter.objects.count()
     if records_count == 0:
         new_counter = PressCounter(number=1)

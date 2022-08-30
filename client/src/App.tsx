@@ -5,30 +5,32 @@ interface CounterResponse {
   counter: number
 }
 
-function App({ isAuthenticated, counterUrl, incrementUrl, csrfmiddlewaretoken }: {
+function App({ isAuthenticated, counterUrl, incrementUrl, csrfmiddlewaretoken, initialCount }: {
   isAuthenticated: boolean
   counterUrl: string
   incrementUrl: string
   csrfmiddlewaretoken: string
+  initialCount: number
 }) {
-  const [count, setCount] = useState(0)
-  const [error, setError] = useState()
+  const [count, setCount] = useState(initialCount)
+  const [error, setError] = useState('')
 
-  useEffect(() => {
-    let mounted = true
-    fetch(counterUrl).then(
-      resp => resp.json()
-    ).then(
-      ({ counter} : CounterResponse) => {
-        if (mounted) {
-          setCount(counter)
-        }
-      }
-    )
-    return () => {
-      mounted = false
-    }
-  }, [counterUrl])
+  // using initialCount instead of useEffect
+  // useEffect(() => {
+  //   let mounted = true
+  //   fetch(counterUrl).then(
+  //     resp => resp.json()
+  //   ).then(
+  //     ({ counter} : CounterResponse) => {
+  //       if (mounted) {
+  //         setCount(counter)
+  //       }
+  //     }
+  //   )
+  //   return () => {
+  //     mounted = false
+  //   }
+  // }, [counterUrl])
 
   async function handleIncrement() {
     // console.log('handleIncrement...')
@@ -51,12 +53,11 @@ function App({ isAuthenticated, counterUrl, incrementUrl, csrfmiddlewaretoken }:
         return
       }
       setCount((data as CounterResponse).counter)
-      setError(undefined)
+      setError('')
 
     } catch (error) {
       console.error(error)
     }
-
   }
 
   // console.log(isAuthenticated)

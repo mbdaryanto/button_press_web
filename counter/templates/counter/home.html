@@ -9,6 +9,7 @@
     counterUrl: "{% url 'counter' %}",
     incrementUrl: "{% url 'increment' %}",
     csrfmiddlewaretoken: "{{ csrf_token }}",
+    initialCount: {{ initialCount }},
   }
   </script>
   {% load static %}

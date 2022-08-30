@@ -1,6 +1,6 @@
 {
   "index.html": {
-    "file": "assets/main.5de8a405.js",
+    "file": "assets/main.b8958816.js",
     "src": "index.html",
     "isEntry": true,
     "imports": [
@@ -8,7 +8,7 @@
     ]
   },
   "src/main.tsx": {
-    "file": "assets/lib.937b331d.js",
+    "file": "assets/lib.6f16d03f.js",
     "src": "src/main.tsx",
     "isEntry": true,
     "css": [
