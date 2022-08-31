@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 import json
 from datetime import timedelta
 from pathlib import Path
@@ -56,8 +56,8 @@ def increment(request: HttpRequest):
             )
             user_press.save()
 
-            counter = increment_press_counter()
-            return JsonResponse({ 'counter': counter })
+            _counter = increment_press_counter()
+            return JsonResponse({ 'counter': _counter })
 
     return JsonResponse({ 'detail': 'Method not allowed'}, status=403)
 
@@ -75,37 +75,43 @@ def read_press_counter() -> int:
     """
     read the press counter from the db
     """
-    records_count = PressCounter.objects.count()
+    _counter = get_counter_singleton()
 
-    if records_count == 0:
+    if _counter is None:
         # if no records found return 0
         return 0
-    else:
-        press_counters: List[PressCounter] = PressCounter.objects.order_by('id')[:1]
-        if len(press_counters) != 1:
-            raise ValueError('Press Counter query error')
-        return press_counters[0].number
+
+    return _counter.number
 
 
 def increment_press_counter() -> int:
     """
     increment the counter and return the updated counter value
     """
-    records_count = PressCounter.objects.count()
-    if records_count == 0:
+    _counter = get_counter_singleton()
+
+    if _counter is None:
         new_counter = PressCounter(number=1)
         new_counter.save()
         return new_counter.number
 
+    _counter.number = F('number') + 1
+    _counter.save()
+    _counter.refresh_from_db()
+
+    return _counter.number
+
+
+def get_counter_singleton() -> Optional[PressCounter]:
+    """
+    return Press Counter singleton or None
+    """
     press_counters = PressCounter.objects.order_by('id').select_for_update()[:1]
+
+    if len(press_counters) == 0:
+        return None
+
     if len(press_counters) != 1:
         raise ValueError('Press Counter query error')
 
-    counter: PressCounter = press_counters[0]
-    counter.number = F('number') + 1
-    counter.save()
-    counter.refresh_from_db()
-
-    return counter.number
-
-
+    return press_counters[0]
